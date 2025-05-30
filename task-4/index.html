@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Viewfinder Photography</title>
+  <!-- AOS Animation Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fcfcfc;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #ffffff;
+      padding: 20px 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #3c77ff;
+      user-select: none;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #444;
+      font-weight: 500;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      color: #3c77ff;
+    }
+
+    /* Hamburger button styles */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      width: 28px;
+      height: 21px;
+      justify-content: space-between;
+    }
+
+    .hamburger span {
+      height: 3px;
+      width: 100%;
+      background: #3c77ff;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    /* Toggle hamburger animation */
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Mobile nav hidden by default */
+    nav {
+      transition: max-height 0.3s ease;
+    }
+
+    /* Hero cover */
+    .hero-cover {
+      position: relative;
+      width: 100%;
+      height: 60vh;
+      background: url('https://source.unsplash.com/1600x900/?photography,nature') center center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 0 15px;
+      text-align: center;
+    }
+    .hero-cover::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.35); /* dark overlay for contrast */
+      z-index: 0;
+    }
+    .hero-cover h1 {
+      position: relative; /* above overlay */
+      font-size: 48px;
+      margin: 0;
+      max-width: 90vw;
+      word-wrap: break-word;
+      z-index: 1;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: 1px;
+      /* Removed background and padding */
+    }
+
+    section {
+      padding: 60px 30px;
+      text-align: center;
+    }
+
+    section h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #1f3b57;
+    }
+
+    section p {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      color: #555;
+      font-size: 18px;
+    }
+
+    /* Testimonials container arranged like gallery grid */
+    .testimonial-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+      padding-bottom: 10px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .pricing {
+      margin: 0 auto;
+      max-width: 500px;
+    }
+
+    .pricing strong {
+      font-size: 20px;
+      color: #3c77ff;
+    }
+
+    .gallery {
+      display: grid;
+      gap: 24px;
+      padding: 0 15px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .gallery-item {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      background: #fff;
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .gallery-item h3 {
+      font-size: 20px;
+      margin: 10px 0;
+      color: #2c3e50;
+    }
+
+    .gallery-item p {
+      margin: 0 0 20px;
+      color: #666;
+      font-size: 16px;
+    }
+
+    footer {
+      text-align: center;
+      background: #f2f6fb;
+      padding: 20px;
+      font-size: 14px;
+      color: #777;
+      border-top: 1px solid #e1e1e1;
+    }
+
+    /* Responsive Styles */
+
+    /* Desktop */
+    @media (min-width: 768px) {
+      nav {
+        max-height: none !important;
+        display: flex !important;
+      }
+      .hamburger {
+        display: none !important;
+      }
+      .gallery {
+        padding: 0 40px;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 767px) {
+      header {
+        padding: 20px 20px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease;
+      }
+
+      nav.open {
+        max-height: 500px; /* enough for menu */
+      }
+
+      .hero-cover h1 {
+        font-size: 32px;
+        /* padding removed */
+      }
+
+      section h2 {
+        font-size: 24px;
+      }
+    }
+
+    /* Fix unwanted horizontal scroll */
+    html, body {
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Viewfinder</div>
+    <div class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav id="nav-menu">
+      <a href="#">Home</a>
+      <a href="#">Gallery</a>
+      <a href="#">Pricing</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero-cover" data-aos="fade-zoom-in" data-aos-duration="1200">
+    <h1>Viewfinder Photography</h1>
+  </div>
+
+  <section>
+    <h2 data-aos="fade-up">Testimonials</h2>
+    <div class="testimonial-container">
+      <div class="card" data-aos="fade-right">
+        <p>"The photos from our wedding are breathtaking. Every moment was captured beautifully."</p>
+        <p>— Olivia & Daniel</p>
+      </div>
+      <div class="card" data-aos="fade-up">
+        <p>"BlissLens gave us lifetime memories of our baby's first birthday. Highly professional and warm."</p>
+        <p>— Sharma Family</p>
+      </div>
+      <div class="card" data-aos="fade-left">
+        <p>"Amazing work for our outdoor shoot. The nature shots are just magical."</p>
+        <p>— Alex T.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-aos="fade-up">Pricing</h2>
+    <div class="card pricing" data-aos="zoom-in">
+      <p><strong>Wedding Package:</strong> $1,500 — Full-day coverage, 250+ edited photos, premium album</p>
+      <p><strong>Birthday/Event Package:</strong> $600 — 4-hour shoot, 80+ edited images</p>
+      <p><strong>Nature & Lifestyle:</strong> $350 — 2-hour outdoor session, artistic edits</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-aos="fade-up">Gallery</h2>
+    <div class="gallery">
+      <div class="gallery-item" data-aos="fade-up">
+        <img src="https://via.placeholder.com/400x250?text=Wedding" alt="Wedding" />
+        <h3>Weddings</h3>
+        <p>Elegant, timeless, and full of emotion.</p>
+      </div>
+      <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+        <img src="https://via.placeholder.com/400x250?text=Birthday" alt="Birthday" />
+        <h3>Birthdays</h3>
+        <p>Cherishing the joy of every celebration.</p>
+      </div>
+      <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+        <img src="https://via.placeholder.com/400x250?text=Nature" alt="Nature" />
+        <h3>Nature</h3>
+        <p>Raw beauty of nature frozen in frames.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Viewfinder Photography. Crafted with passion and light.
+  </footer>
+
+  <!-- AOS JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    function toggleMenu() {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+      hamburger.setAttribute('aria-expanded', !expanded);
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('open');
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+  </script>
+</body>
+</html>

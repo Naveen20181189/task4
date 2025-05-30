@@ -1,0 +1,50 @@
+@media (min-width: 768px) {
+      nav {
+        max-height: none !important;
+        display: flex !important;
+      }
+      .hamburger {
+        display: none !important;
+      }
+      .gallery {
+        padding: 0 40px;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 767px) {
+      header {
+        padding: 20px 20px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease;
+      }
+
+      nav.open {
+        max-height: 500px; /* enough for menu */
+      }
+
+      .hero-cover h1 {
+        font-size: 32px;
+        /* padding removed */
+      }
+
+      section h2 {
+        font-size: 24px;
+      }
+    }
+
+    /* Fix unwanted horizontal scroll */
+    html, body {
+      overflow-x: hidden;
+    }
